@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.hdwyl.tags.mapper.FavoritesMapper">
+
+	<resultMap type="org.hdwyl.tags.domain.Favorites" id="Favorites">
+		<result property="username" column="username" jdbcType="VARCHAR" />
+		<result property="favId" column="fav_id" jdbcType="INTEGER" />
+		<result property="category" column="category" jdbcType="INTEGER" />
+		<result property="title" column="title" jdbcType="VARCHAR" />
+		<result property="createdTime" column="created_time" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<insert id="insertOne" parameterType="org.hdwyl.tags.domain.Favorites">
+		<![CDATA[
+		INSERT INTO favorites
+		(
+			username,
+			fav_id,
+			category,
+			title,
+			created_time
+		)
+		VALUES
+		(
+			#{username, jdbcType=VARCHAR},
+			#{favId, jdbcType=INTEGER},
+			#{category, jdbcType=INTEGER},
+			#{title, jdbcType=VARCHAR},
+			now()
+		)
+       ]]>
+	</insert>
+
+	<select id="selFavorites" parameterType="java.util.Map" resultType="org.hdwyl.tags.domain.Favorites">
+		SELECT
+			f.title,
+			DATE_FORMAT(f.created_time,'%Y-%m-%d %H:%i:%s') AS favCreateDate,
+			t.`name` as themeName,
+			s.*,
+			s.theme_id as themeId,
+			DATE_FORMAT(s.created_time,'%Y-%m-%d %H:%i:%s') AS createDate
+		FROM
+			favorites f
+		LEFT JOIN search_history s ON f.fav_id = s.id
+		LEFT JOIN tag_theme t ON s.theme_id = t.id
+		WHERE
+			f.username=#{username}
+		ORDER BY f.created_time DESC
+		<if test="offset!=null">
+			LIMIT #{offset},#{size}
+		</if>
+	</select>
+
+	<select id="getRowCount" parameterType="java.util.Map" resultType="int">
+		SELECT count(1) FROM favorites where username=#{username}
+	</select>
+
+	<delete id="deleteFavorites" parameterType="java.util.Map">
+		delete from favorites where username=#{username} and fav_id=#{favId}
+	</delete>
+</mapper>

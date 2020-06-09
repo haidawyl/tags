@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>数据驱动营销平台-艾特密</title>
+
+    <!-- Javascript -->
+    <script th:attr="src=@{/js/jquery/jquery.min.js?v=2.1.4}"></script>
+    <script th:attr="src=@{/js/bootstrap/bootstrap.min.js}"></script>
+    <script th:attr="src=@{/js/jquery/jquery.backstretch.min.js}"></script>
+    <script th:attr="src=@{/js/ddmp/home.js}"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/font-awesome.min.css}"/>
+    <link rel="stylesheet" th:href="@{/css/form-elements.css}"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+
+    <!-- Favicon and touch icons -->
+    <link rel="shortcut icon" th:href="@{/img/favicon.png}"/>
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" th:href="@{/img/apple-touch-icon-144-precomposed.png}"/>
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" th:href="@{/img/apple-touch-icon-114-precomposed.png}"/>
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" th:href="@{/img/apple-touch-icon-72-precomposed.png}"/>
+    <link rel="apple-touch-icon-precomposed" th:href="@{/img/apple-touch-icon-57-precomposed.png}"/>
+</head>
+
+<body style="background-color: #f9f9f9;">
+<!-- Top content -->
+<div class="container" style="margin-top:15%;">
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-3 form-box" style="width: 70%;margin-left: 15%;border: 1px solid #e0e0e0;padding-right:0; padding-left: 0;">
+            <div class="form-top">
+                <div class="form-top-left">
+                    <h3>数据营销平台</h3>
+                    <p style="color: red" id="errorMsg"></p>
+                </div>
+            </div>
+            <div class="form-bottom">
+                <!--<form role="form" method="post" class="login-form">-->
+                <table id="table">
+                    <tr>
+                        <td style="width:80%;padding-right: 10px">
+                            <input type="text" name="ipt" placeholder="请输入完整企业名称" class="form-username form-control" id="ipt"/>
+                        </td>
+                        <td style="padding-right: 10px">
+                             <button type="submit" class="btn" onclick="searchConfig()">查一下</button>
+                        </td>
+                        <td>
+                            <button type="submit" class="btn" onclick="search()">高级搜素</button>
+                        </td>
+                    </tr>
+                <!--</form>-->
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

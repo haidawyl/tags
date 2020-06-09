@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.hdwyl.tags.mapper.SearchHistoryMapper">
+
+	<resultMap type="org.hdwyl.tags.domain.SearchHistory" id="SearchHistoryResult">
+		<result property="id" column="id" jdbcType="INTEGER" />
+		<result property="themeId" column="theme_id" jdbcType="INTEGER" />
+		<result property="columns" column="columns" jdbcType="VARCHAR" />
+		<result property="conditions" column="conditions" jdbcType="VARCHAR" />
+		<result property="sort" column="sort" jdbcType="VARCHAR" />
+		<result property="limit" column="limit" jdbcType="INTEGER" />
+		<result property="remark" column="remark" jdbcType="VARCHAR" />
+		<result property="createdUser" column="created_user" jdbcType="VARCHAR" />
+		<result property="createdTime" column="created_time" jdbcType="TIMESTAMP" />
+		<result property="themeName" column="themeName" jdbcType="VARCHAR" />
+		<result property="createDate" column="createDate" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<insert id="insertOne" useGeneratedKeys="true" keyProperty="id" parameterType="org.hdwyl.tags.domain.SearchHistory">
+		<![CDATA[
+		INSERT INTO search_history
+		(
+			id,
+			theme_id,
+			columns,
+			conditions,
+			sort,
+			`limit`,
+			remark,
+			created_user,
+			created_time
+		)
+		VALUES
+		(
+			#{id, jdbcType=INTEGER},
+			#{themeId, jdbcType=INTEGER},
+			#{columns, jdbcType=VARCHAR},
+			#{conditions, jdbcType=VARCHAR},
+			#{sort, jdbcType=VARCHAR},
+			#{limit, jdbcType=INTEGER},
+			#{remark, jdbcType=VARCHAR},
+			#{createdUser, jdbcType=VARCHAR},
+			now()
+		)
+       ]]>
+	</insert>
+
+	<select id="query" resultMap="SearchHistoryResult" parameterType="java.util.Map">
+		SELECT s.*,DATE_FORMAT(s.created_time,'%Y-%m-%d %H:%i:%s') AS createDate,
+		t.name as themeName,
+		case when f.num is null then 0 else 1 end as isDelete,
+		case when f1.num is null then 0 else 1 end as isFav
+		FROM search_history s
+		LEFT JOIN tag_theme t
+		on s.theme_id = t.id
+		LEFT JOIN
+		(
+		select count(1) as num,fav_id
+		FROM
+		favorites
+		GROUP BY fav_id
+		)f
+		on s.id=f.fav_id
+		LEFT JOIN
+		(
+		select count(1) as num,fav_id
+		FROM
+		favorites
+		WHERE username=#{username}
+		GROUP BY fav_id
+		)f1
+		on s.id=f1.fav_id
+		WHERE TRUE
+		ORDER BY s.created_time DESC
+		<if test="offset!=null">
+			LIMIT #{offset},#{size}
+		</if>
+
+	</select>
+
+	<select id="getRowCount" parameterType="java.util.Map" resultType="int">
+		SELECT count(1) FROM search_history
+	</select>
+
+	<select id="selConditions" resultType="org.hdwyl.tags.domain.SearchHistory">
+		SELECT id,conditions FROM search_history
+	</select>
+
+	<delete id="deleteSearchHistory" parameterType="int">
+		delete from search_history where id=#{id}
+	</delete>
+
+	<select id="selHistoryCountByFav" parameterType="java.util.Map" resultType="int">
+		SELECT count(f.fav_id)
+		FROM search_history s
+		LEFT JOIN favorites f
+		on s.id=f.fav_id
+		where f.username=#{username} and s.id=#{id}
+	</select>
+</mapper>

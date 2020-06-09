@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.hdwyl.tags.mapper.DictIndustryMapper">
+
+	<resultMap type="org.hdwyl.tags.domain.DictIndustry" id="DictIndustryResult">
+		<result property="cCorp" column="c_corp" jdbcType="INTEGER" />
+		<result property="trid" column="trid" jdbcType="VARCHAR" />
+		<result property="type0" column="type0" jdbcType="VARCHAR" />
+		<result property="type1" column="type1" jdbcType="VARCHAR" />
+		<result property="type2" column="type2" jdbcType="VARCHAR" />
+		<result property="type3" column="type3" jdbcType="VARCHAR" />
+		<result property="name" column="name" jdbcType="VARCHAR" />
+		<result property="tren" column="tren" jdbcType="VARCHAR" />
+		<result property="moditime" column="moditime" jdbcType="TIMESTAMP" />
+		<result property="remark" column="remark" jdbcType="VARCHAR" />
+		<result property="lev" column="lev" jdbcType="INTEGER" />
+		<result property="pid" column="pid" jdbcType="VARCHAR" />
+		<result property="value" column="value" jdbcType="VARCHAR" />
+		<result property="text" column="text" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="queryDict" resultMap="DictIndustryResult">
+		SELECT trid AS `value`, TRIM(`name`) AS `text` FROM dict_industry
+		<if test="condition != null">
+			WHERE <![CDATA[${condition}]]>
+		</if>
+	</select>
+
+	<select id="queryDictAndParent" resultMap="DictIndustryResult">
+		SELECT
+			c.trid AS `value`,
+			TRIM(c.`name`) AS `text`,
+			p.trid AS pvalue,
+			TRIM(p.`name`) AS ptext
+		FROM
+			dict_industry c
+		LEFT JOIN dict_industry p
+		on c.pid = p.trid
+	</select>
+
+	<select id="queryByPk" resultMap="DictIndustryResult">
+		SELECT * FROM dict_industry WHERE trid = #{trid, jdbcType=VARCHAR}
+	</select>
+
+</mapper>

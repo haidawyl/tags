@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="utf-8"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<meta name="renderer" content="webkit"/>
+	<meta http-equiv="Cache-Control" content="no-siteapp"/>
+	<meta name="keywords" content="数据驱动营销平台-艾特密"/>
+	<meta name="description" content="数据驱动营销平台-艾特密"/>
+	<title>数据驱动营销平台-艾特密</title>
+
+	<!-- Javascript -->
+	<script th:attr="src=@{/js/jquery/jquery.min.js?v=2.1.4}"></script>
+	<script th:attr="src=@{/js/bootstrap/bootstrap.min.js}"></script>
+	<script th:attr="src=@{/js/jquery/jquery.backstretch.min.js}"></script>
+	<script th:attr="src=@{/js/ddmp/login.js}"></script>
+	
+	<!-- CSS -->
+	<link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.min.css}"/>
+	<link rel="stylesheet" th:href="@{/css/font-awesome.min.css}"/>
+	<link rel="stylesheet" th:href="@{/css/form-elements.css}"/>
+	<link rel="stylesheet" th:href="@{/css/style.css}"/>
+
+	<!-- Favicon and touch icons -->
+	<link rel="shortcut icon" th:href="@{/img/favicon.png}"/>
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" th:href="@{/img/apple-touch-icon-144-precomposed.png}"/>
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" th:href="@{/img/apple-touch-icon-114-precomposed.png}"/>
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" th:href="@{/img/apple-touch-icon-72-precomposed.png}"/>
+	<link rel="apple-touch-icon-precomposed" th:href="@{/img/apple-touch-icon-57-precomposed.png}"/>
+
+	<link th:href="@{/favicon.ico}" rel="shortcut icon"/>
+</head>
+
+<body style="background-image: url('../img/background.jpg'); background-attachment: fixed; background-repeat: no-repeat; background-size: cover;">
+	<!-- Top content -->
+	<div class="container" style="margin-top:8%">
+		<div class="row">
+			<div class="col-sm-6 col-sm-offset-3 form-box">
+				<div class="form-top">
+					<div class="form-top-left">
+						<h3>数据营销平台</h3>
+						<p>Enter your username and password to log on:</p>
+						<p style="color: red" th:text="${errors}"></p>
+					</div>
+					<div class="form-top-right">
+						<i class="fa fa-lock"></i>
+					</div>
+				</div>
+				<div class="form-bottom">
+					<form role="form" action="/login" method="post" class="login-form">
+						<div class="form-group">
+							<label class="sr-only" for="form-username">用户帐号</label>
+							<input type="text" th:value="${account}" name="account" placeholder="用户帐号..." class="form-username form-control" id="form-username"/>
+						</div>
+						<div class="form-group">
+							<label class="sr-only" for="form-password">用户密码</label>
+							<input type="password" name="password" placeholder="用户密码..." class="form-password form-control" id="form-password"/>
+						</div>
+						<button type="submit" class="btn">登&nbsp;&nbsp;&nbsp;录</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

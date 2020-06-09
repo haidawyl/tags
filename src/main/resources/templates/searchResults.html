@@ -1,0 +1,208 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="renderer" content="webkit"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <meta name="keywords" content="数据驱动营销平台-艾特密"/>
+    <meta name="description" content="数据驱动营销平台-艾特密"/>
+
+    <title>数据驱动营销平台-艾特密</title>
+
+    <script th:attr="src=@{/js/ie-emulation-modes-warning.js}"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link th:href="@{/css/ie10-viewport-bug-workaround.css}" rel="stylesheet"/>
+
+    <script th:attr="src=@{/js/jquery/jquery.min.js?v=2.1.4}"></script>
+    <script th:attr="src=@{/js/bootstrap/bootstrap.min.js?v=3.3.6}"></script>
+    <script th:attr="src=@{/js/bootstrap/bootstrap-table.min.js}"></script>
+    <script th:attr="src=@{/js/bootstrap/bootstrap-table-zh-CN.min.js}"></script>
+    <script th:attr="src=@{/js/bootstrap/bootstrap-datepicker.min.js}"></script>
+    <script th:attr="src=@{/js/bootstrap/bootstrap-datepicker.zh-CN.min.js}"></script>
+    <script th:attr="src=@{/js/tableExport.js}"></script>
+    <script th:attr="src=@{/js/ddmp/searchResults.js}"></script>
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/css/bootstrap/bootstrap.min.css?v=3.3.6}" rel="stylesheet"/>
+    <link th:href="@{/css/bootstrap/bootstrap-table.css}" rel="stylesheet"/>
+    <link th:href="@{/css/bootstrap/bootstrap-datepicker3.css}" rel="stylesheet"/>
+    <link th:href="@{/css/font-awesome.min.css}" rel="stylesheet"/>
+
+    <style type="text/css">
+        body {
+            overflow: hidden !important;
+        }
+
+        table {
+            table-layout: fixed;
+        }
+
+        td {
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body style="padding-top : 0px;background-color:#f9fcfc">
+<form class="form-horizontal" role="form">
+    <div class="form-group" style="height: 60px;">
+        <div class="col-sm-10">
+            <p style="padding: 10px 0 0 50px; margin-bottom: -10px;font-weight: bold;" th:utext="${remark}"></p>
+        </div>
+        <div class="col-sm-2" style="padding:10px 50px 0 0;">
+            <button id="favbtn" th:if="${fav == 0 && id != 0}" type="button" class="btn btn-primary fa fa-tag"
+                    onclick="showFavModal()">收藏
+            </button>
+            <span id="favspan" hidden>已收藏</span>
+            <span th:if="${fav != 0}">已收藏</span>
+            <button type="button" class="btn btn-primary pull-right fa fa-download"
+                    onclick="$('#resultsTable').tableExport({ type: 'excel', escape: 'false' })">导出
+            </button>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-12">
+            <table id="resultsTable"></table>
+        </div>
+    </div>
+</form>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    收藏搜索历史
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label for="favTitle" class="col-sm-2 control-label">标题</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="favTitle" name="favTitle" placeholder="请输标题">
+                            <input type="hidden" id="favId" name="favId" th:value="${id}">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+                <button type="submit" class="btn btn-primary" onclick="saveFav()">
+                    提交
+                </button><span id="tip"> </span>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<script type="text/javascript" th:inline="javascript">
+    function search() {
+        var searchArgs = {
+            "id": [[${id}]],
+            "themeId": [[${themeId}]],
+            "columns": [[${customColumns}]],
+            "conditions": [[${conditions}]],
+            "sort": [[${sort}]],
+            "limit": [[${limit}]],
+            "remark": [[${remark}]]
+        };
+
+        // 销毁表格
+        $("#resultsTable").bootstrapTable('destroy');
+
+        $("#resultsTable").bootstrapTable({
+            locale: 'zh-CN', //中文支持
+            url: '/search/getResults',
+            method: 'post',
+            dataType: "json",
+            contentType: "application/x-www-form-urlencoded",
+            queryParamsType: '', // 在这种情况下传给服务器的参数为: pageSize,pageNumber
+            queryParams: function queryParams(params) {
+                param = {
+                    pageNumber: params.pageNumber,
+                    pageSize: params.pageSize
+                };
+                for (var key in searchArgs) {
+                    param[key] = searchArgs[key];
+                }
+                return param;
+            },
+            uniqueId: 'id',
+            pagination: false, // 是否开启分页
+            pageNumber: 1, // 初始化加载第一页，默认第一页
+            pageSize: 100, // 每页的记录行数
+            pageList: [100], // 可供选择的每页的行数
+            sidePagination: "server", // 分页方式：client客户端分页，server服务端分页
+            height: $(window).height() - 75,
+            columns: [{
+                field: 'No',
+                title: '序号',
+                width: 50,
+                align: 'center',
+                formatter: function (value, row, index) {
+                    return index + 1;
+                }
+            }, {
+                field: 'operate',
+                title: '操作',
+                align: 'center',
+                width: 180,
+                formatter: operateFormatter
+            }
+            ].concat([[${tableColumns}]])
+        });
+    }
+
+    function operateFormatter(value, row, index) {
+        return [
+            '<button onclick="reviewpdf(\'' + row.id + '\')" type="button" class="btn btn-default btn-sm fa fa-file-pdf-o">在线预览</button>&nbsp;&nbsp;'
+            + '<button onclick="downloadpdf(\'' + row.id + '\')" type="button" class="btn btn-default btn-sm fa fa-download">下载</button>'
+        ].join('');
+    }
+
+    function reviewpdf(key) {
+        var url = "/downloadpdf?id=" + key;
+        window.open("/js/pdfjs/web/viewer.html?file=" + encodeURIComponent(url));
+    }
+
+    function downloadpdf(key) {
+        window.location.href = "/downloadpdf?id=" + key;
+    }
+
+    function showFavModal(){
+        $("#myModal").modal('show');
+    }
+
+    function saveFav(){
+        var favId = $("#favId").val();
+        var favTitle = $("#favTitle").val();
+        $.ajax({
+            url: "/saveFavorites",
+            type: "post",
+            data: {"favId": favId,"title": favTitle},
+            datatype: "json",
+            success: function (data) {
+                if(data == 'success'){
+                    $("#favbtn").hide();
+                    $("#favspan").show('');
+                    $("#myModal").modal('hide');
+                    $("#favTitle").val('');
+                }
+            }
+        });
+    }
+</script>
+
+<!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+<script th:attr="src=@{/js/holder.min.js}"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script th:attr="src=@{/js/ie10-viewport-bug-workaround.js}"></script>
+</body>
+</html>

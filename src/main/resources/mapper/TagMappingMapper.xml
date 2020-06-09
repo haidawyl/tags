@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.hdwyl.tags.mapper.TagMappingMapper">
+
+	<resultMap type="org.hdwyl.tags.domain.TagMapping" id="TagMappingResult">
+		<result property="id" column="id" jdbcType="INTEGER" />
+		<result property="name" column="name" jdbcType="VARCHAR" />
+		<result property="valueType" column="value_type" jdbcType="VARCHAR" />
+		<result property="themeId" column="theme_id" jdbcType="INTEGER" />
+		<result property="typeId" column="type_id" jdbcType="INTEGER" />
+		<result property="locationId" column="location_id" jdbcType="INTEGER" />
+	</resultMap>
+
+	<insert id="insertOne" parameterType="org.hdwyl.tags.domain.TagMapping">
+		<![CDATA[
+		INSERT INTO tag_mapping
+		(
+			id,
+			`name`,
+			value_type,
+			theme_id,
+			type_id,
+			location_id
+		)
+		VALUES
+		(
+			#{id, jdbcType=INTEGER},
+			#{name, jdbcType=VARCHAR},
+			#{valueType, jdbcType=VARCHAR},
+			#{themeId, jdbcType=INTEGER},
+			#{typeId, jdbcType=INTEGER},
+			#{locationId, jdbcType=INTEGER}
+		)
+       ]]>
+	</insert>
+
+	<select id="queryAll" resultMap="TagMappingResult">
+		SELECT * FROM tag_mapping
+	</select>
+
+	<select id="query" resultMap="TagMappingResult">
+		SELECT * FROM tag_mapping
+		<where>
+			<if test="themeId != null">
+				theme_id = #{themeId, jdbcType=INTEGER}
+			</if>
+			<if test="typeId != null">
+				AND type_id = #{typeId, jdbcType=INTEGER}
+			</if>
+		</where>
+	</select>
+
+	<select id="queryByLocation" resultMap="TagMappingResult">
+		SELECT * FROM tag_mapping WHERE location_id = #{locationId, jdbcType=INTEGER}
+	</select>
+
+</mapper>

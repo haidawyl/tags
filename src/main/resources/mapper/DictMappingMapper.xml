@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.hdwyl.tags.mapper.DictMappingMapper">
+
+	<resultMap type="org.hdwyl.tags.domain.DictMapping" id="DictMappingResult">
+		<result property="keyword" column="keyword" jdbcType="VARCHAR" />
+		<result property="table" column="table" jdbcType="VARCHAR" />
+		<result property="condition" column="condition" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="query" resultMap="DictMappingResult">
+		SELECT * FROM dict_mapping
+		<where>
+			<if test="keyword != null">
+				keyword = #{keyword, jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+
+</mapper>
