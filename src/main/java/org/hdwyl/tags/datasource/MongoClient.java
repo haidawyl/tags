@@ -1,6 +1,5 @@
 package org.hdwyl.tags.datasource;
 
-import org.hdwyl.tags.common.security.PwdEncryptor;
 import com.mongodb.BasicDBObject;
 import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoCredential;
@@ -8,6 +7,7 @@ import com.mongodb.ServerAddress;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
 import org.bson.types.ObjectId;
@@ -31,7 +31,7 @@ public class MongoClient extends DataSourceConfig {
         List<ServerAddress> addressList = new ArrayList<ServerAddress>();
         addressList.add(serverAddress);
 
-        MongoCredential credential = MongoCredential.createScramSha1Credential(super.username, super.schema, PwdEncryptor.decrypt(super.password).toCharArray());
+        MongoCredential credential = MongoCredential.createScramSha1Credential(super.username, super.schema, new String(Base64.decodeBase64(super.password.getBytes())).toCharArray());
         List<MongoCredential> credentialList = new ArrayList<MongoCredential>();
         credentialList.add(credential);
 

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class SystemAspectPointcut {
 
 	// 所有Service方法的切入点
-	@Pointcut("within(com.atme8.ddmp.service..*)")
+	@Pointcut("within(org.hdwyl.tags.service..*)")
 	public void allServiceMethodsPointcut() {
 	}
 

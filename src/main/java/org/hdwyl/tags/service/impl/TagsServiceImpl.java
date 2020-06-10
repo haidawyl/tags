@@ -1,7 +1,7 @@
 package org.hdwyl.tags.service.impl;
 
 import org.hdwyl.tags.service.BaseService;
-import org.hdwyl.tags.service.DdmpService;
+import org.hdwyl.tags.service.TagsService;
 import org.apache.commons.lang3.StringUtils;
 import org.hdwyl.tags.domain.*;
 import org.hdwyl.tags.mapper.*;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class DdmpServiceImpl extends BaseService implements DdmpService {
+public class TagsServiceImpl extends BaseService implements TagsService {
 
     @Autowired
     protected TagThemeMapper tagThemeMapper;

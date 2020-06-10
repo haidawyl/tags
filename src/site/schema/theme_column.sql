@@ -1,18 +1,3 @@
-/*
-Navicat MySQL Data Transfer
-
-Source Server         : 114.115.143.6-huaweicloud
-Source Server Version : 50621
-Source Host           : 114.115.143.6:3306
-Source Database       : ddmp
-
-Target Server Type    : MYSQL
-Target Server Version : 50621
-File Encoding         : 65001
-
-Date: 2018-05-04 08:54:22
-*/
-
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------

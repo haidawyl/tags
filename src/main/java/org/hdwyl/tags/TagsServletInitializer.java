@@ -3,11 +3,11 @@ package org.hdwyl.tags;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
-public class ServletInitializer extends SpringBootServletInitializer {
+public class TagsServletInitializer extends SpringBootServletInitializer {
 
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-		return application.sources(DdmpApplication.class);
+		return application.sources(TagsApplication.class);
 	}
 
 }

@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class Config {
 
-    @Value(value = "${pdf-url}")
+    @Value(value = "${pdf-url:null}")
     private String pdfUrl;
 
     public String getPdfUrl() {

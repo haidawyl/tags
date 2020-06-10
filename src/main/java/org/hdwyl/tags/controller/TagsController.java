@@ -3,7 +3,7 @@ package org.hdwyl.tags.controller;
 import org.hdwyl.tags.common.Constants;
 import org.hdwyl.tags.domain.TagTheme;
 import org.hdwyl.tags.domain.TagType;
-import org.hdwyl.tags.service.DdmpService;
+import org.hdwyl.tags.service.TagsService;
 import org.hdwyl.tags.service.SearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,13 +16,17 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-public class DdmpController {
+public class TagsController {
 
-    @Autowired
-    protected DdmpService ddmpService;
+    protected TagsService tagsService;
 
-    @Autowired
     protected SearchService searchService;
+
+    @Autowired
+    public TagsController(TagsService tagsService, SearchService searchService) {
+        this.tagsService = tagsService;
+        this.searchService = searchService;
+    }
 
     @RequestMapping("/")
     String index(HttpServletRequest request, HttpServletResponse response) {
@@ -44,8 +48,8 @@ public class DdmpController {
 
     @RequestMapping("/searchConfig")
     String searchConfig(HttpServletRequest request, HttpServletResponse response, Map<String, Object> resultMap) {
-        List<TagTheme> tagThemeList = ddmpService.getAllTagTheme();
-        List<TagType> tagTypeList = ddmpService.getAllTagType();
+        List<TagTheme> tagThemeList = tagsService.getAllTagTheme();
+        List<TagType> tagTypeList = tagsService.getAllTagType();
         resultMap.put("tagThemeList", tagThemeList);
         resultMap.put("tagTypeList", tagTypeList);
         return "searchConfig";

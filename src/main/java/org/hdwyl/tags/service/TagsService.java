@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-public interface DdmpService {
+public interface TagsService {
 
     List<TagTheme> getAllTagTheme();
 

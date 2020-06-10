@@ -33,7 +33,7 @@
 	</settings>
 
 	<typeAliases>
-		<package name="com.atme8.ddmp.domain" />
+		<package name="org.hdwyl.tags.domain" />
 	</typeAliases>
 
 	<plugins>

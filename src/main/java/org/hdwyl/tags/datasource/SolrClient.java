@@ -1,6 +1,6 @@
 package org.hdwyl.tags.datasource;
 
-import org.hdwyl.tags.common.security.PwdEncryptor;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -38,7 +38,7 @@ public class SolrClient extends DataSourceConfig {
             params.set(HttpClientUtil.PROP_MAX_CONNECTIONS_PER_HOST, 32);
             params.set(HttpClientUtil.PROP_FOLLOW_REDIRECTS, false);
             params.set(HttpClientUtil.PROP_BASIC_AUTH_USER, super.username);
-            params.set(HttpClientUtil.PROP_BASIC_AUTH_PASS, PwdEncryptor.decrypt(super.password));
+            params.set(HttpClientUtil.PROP_BASIC_AUTH_PASS, new String(Base64.decodeBase64(super.password.getBytes())));
             params.set(HttpClientUtil.PROP_MAX_CONNECTIONS, 1000);
             params.set(HttpClientUtil.PROP_ALLOW_COMPRESSION, true);
             params.set(HttpClientUtil.PROP_MAX_CONNECTIONS_PER_HOST, 1000);

@@ -1,17 +1,17 @@
 package org.hdwyl.tags.service;
 
-import com.atme8.project.insuser.model.InsuserModel;
+import org.hdwyl.tags.model.InsuserModel;
 
 public class BaseService {
 
-	protected InsuserModel loginUser;
+    protected InsuserModel loginUser;
 
-	public void setLoginUser(InsuserModel loginUser) {
-		this.loginUser = loginUser;
-	}
+    public void setLoginUser(InsuserModel loginUser) {
+        this.loginUser = loginUser;
+    }
 
-	public InsuserModel getLoginUser() {
-		return this.loginUser;
-	}
+    public InsuserModel getLoginUser() {
+        return this.loginUser;
+    }
 
 }

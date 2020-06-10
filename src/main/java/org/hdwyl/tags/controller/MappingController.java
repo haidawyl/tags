@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.hdwyl.tags.common.Constants;
 import org.hdwyl.tags.domain.TagMapping;
 import org.hdwyl.tags.domain.ThemeColumn;
-import org.hdwyl.tags.service.DdmpService;
+import org.hdwyl.tags.service.TagsService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,13 +19,13 @@ import java.util.List;
 public class MappingController {
 
     @Autowired
-    protected DdmpService ddmpService;
+    protected TagsService tagsService;
 
     @RequestMapping(value = "/getTagMappings")
     public JSONObject getTagMappings(HttpServletRequest request, HttpServletResponse response) {
         int themeId = Integer.parseInt(request.getParameter("themeId"));
         int typeId = Integer.parseInt(request.getParameter("typeId"));
-        List<TagMapping> tagList = ddmpService.getTagMappings(themeId, typeId);
+        List<TagMapping> tagList = tagsService.getTagMappings(themeId, typeId);
 
         JSONObject json = new JSONObject();
         json.put("rows", tagList);
@@ -43,7 +43,7 @@ public class MappingController {
         } else {
             args = new String[]{};
         }
-        List<?> dictList = ddmpService.getDict(keyword, args);
+        List<?> dictList = tagsService.getDict(keyword, args);
 
         JSONObject json = new JSONObject();
         json.put("dict", dictList);
@@ -54,7 +54,7 @@ public class MappingController {
     @RequestMapping(value = "/getDisplayColumns")
     public JSONObject getDisplayColumns(HttpServletRequest request, HttpServletResponse response) {
         int themeId = Integer.parseInt(request.getParameter("themeId"));
-        List<ThemeColumn> columnList = ddmpService.getDisplayColumns(themeId, Constants.Status.VALID.getValue());
+        List<ThemeColumn> columnList = tagsService.getDisplayColumns(themeId, Constants.Status.VALID.getValue());
 
         JSONObject json = new JSONObject();
         json.put("rows", columnList);

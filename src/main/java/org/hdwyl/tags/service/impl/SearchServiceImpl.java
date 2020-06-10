@@ -275,7 +275,7 @@ public class SearchServiceImpl extends BaseService implements SearchService {
             searchHistory.setSort(sort);
             searchHistory.setLimit(limit);
             searchHistory.setRemark(remark);
-            searchHistory.setCreatedUser(loginUser.getName());
+            searchHistory.setCreatedUser(loginUser.getUsername());
             searchHistoryMapper.insertOne(searchHistory);
             Integer id = searchHistory.getId();
             return id;

@@ -19,7 +19,7 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import com.alibaba.druid.pool.DruidDataSourceFactory;
 
 @Configuration
-@MapperScan(basePackages = "com.atme8.ddmp.mapper")
+@MapperScan(basePackages = "org.hdwyl.tags.mapper")
 public class MyBatisConfig {
 
 	private static Logger logger = LoggerFactory.getLogger(MyBatisConfig.class);
