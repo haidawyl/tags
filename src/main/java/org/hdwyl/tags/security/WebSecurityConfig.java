@@ -20,6 +20,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity security) throws Exception {
+        // 在SpringBoot中允许加载iframe
         security.headers().frameOptions().disable();
         security.csrf().disable()
                 .authorizeRequests()
